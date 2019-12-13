@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 const user = require('./user');
+const post = require('./post');
+
 // app은 말 그대로 앱이라 한번만 만들어야 함.
 
 // router 함수에겐 router 가 app 처럼 보이는것
@@ -18,6 +20,8 @@ router.get('/login', (req, res, next) => {
 
 //   // node.js에선 else를 안 쓰고 바로 리턴해버림. 중괄호를 최대한 줄이려는 관습이 있음
 // });
+
+
 
 router.use((req, res, next) => {
   console.log('매 요청마다 작도ㅓㅇ');
@@ -60,5 +64,6 @@ router.get('/foo', (req, res, next) => {
 
 // user router만 붙은 애들만 일로 들어오는 것
 router.use('/user', user);
+router.use('/post', post);
 
 module.exports = router;

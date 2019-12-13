@@ -1,4 +1,6 @@
 const express = require('express');
+const validator = require('express-validator');
+const {validationMiddleware} = require('../controllers/validator')
 
 const router = express.Router();
 const { checkUser } = require('../controllers/auth');
@@ -7,6 +9,9 @@ const json = require('../services/json');
 
 // 방법 1
 router.use(checkUser);
+// 모든 요청을 다 받음.
+// 그 안에 있는 미들웨어가 next 안쓰면 여기서 뒤로 진행을 못하는 상황
+// checkUser가 router 입장에서는 미들웨어인것.
 
 // 방법 2
 // index.js에 router.use('/user', checkUser, user)
@@ -30,8 +35,12 @@ router.get('/', checkUser, (req, res, next) => {
 });
 
 // user에만 권한이 있고, user/id 에는 영향 안줌. 독립적으로 작동함
-router.get('/:id', (req, res, next) => {
-  const id = req.params;
+router.get('/:id', validationMiddleware(
+  validator.param('id').toInt().isInt(),
+),(req, res, next) => {
+
+
+  const id = req.params.id;
   console.log(id);
   res.status(200).json({
     name: '허선생님',

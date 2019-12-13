@@ -11,6 +11,7 @@ const routes = require('./routes');
 //   res.json({ foo: 1 });
 // });
 
+app.use(express.json())
 app.use(cookieParser());
 
 app.use(routes);
